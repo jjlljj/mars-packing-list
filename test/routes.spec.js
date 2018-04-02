@@ -83,12 +83,25 @@ describe('Api Routes', () => {
   })
 
   describe('POST /api/v1/items', () => {
+
+    it('should return 422 if missing information from the request body', () => {
+      return chai.request(server)
+        .post('/api/v1/items')
+        .send({ packed: false })
+        .then(response => {
+          response.should.have.status(422)
+          response.body.error.should.equal('Expected format { item_name: <string>, packed: <boolean> }. You are missing a item_name property')
+        })
+        .catch(error => {
+          throw error 
+        })
+    })
+
     it('should add a new item', () => {
       return chai.request(server)
         .post('/api/v1/items')
-        .send({ item_name: 'shoes', packed: true })
+        .send({ item_name: 'yo', packed: 'true' })
         .then(response => {
-          console.log(response)
           response.should.have.status(201)
           response.should.be.json
           response.body.should.be.a('object')
@@ -104,18 +117,32 @@ describe('Api Routes', () => {
           throw error
         })
     })
+  })
 
-    it('should return 422 if missing information from the request body', () => {
-      return chai.request(server)
-        .post('/api/v1/items')
-        .send({ packed: false })
+  describe('PATCH /api/v1/items/:id', (req, res) => {
+    it('should update the expected item', () => {
+      return chai
+        .request(server)
+        .patch('/api/v1/items/1')
+        .send({ packed: 'false' })
         .then(response => {
-          response.should.have.status(422)
-          response.body.error.should.equal('Expected format { item_name: <string>, packed: <boolean> }. You are missing a item_name property')
+          response.should.have.status(200);
+          response.body.should.equal('Record successfully updated');
         })
         .catch(error => {
-          throw error 
+          throw error
         })
     })
+    
+    it('should return 422 if no record was updated', () => {
+      return chai
+        .request(server)
+        .patch('/api/v1/items/999')
+        .send({})
+        .then(response => {
+          response.should.have.status(422);
+          expect(response.body.error).to.equal('unable to update item');
+        });
+    });
   })
 })

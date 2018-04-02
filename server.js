@@ -54,7 +54,24 @@ app.post('/api/v1/items', (req, res) => {
 })
 
 app.patch('/api/v1/items/:id', (req, res) => {
-  // update item at :id in mars_items table  --> require id: <number> from req.params, packed: <boolean> from req.body
+  const { id }  = req.params
+  const { packed, item_name } = req.body
+
+  db('mars_items')
+    .where('id', id)
+    .update({
+      item_name,
+      packed
+    })
+    .then(updated => {
+      if (!updated) {
+        return res.status(422).json({ error: 'unable to update item' });
+      }
+      res.status(200).json('Record successfully updated');
+    })
+    .catch(error => {
+      res.status(500).json({ error });
+    });
 })
 
 app.delete('/api/v1/items/:id', (req, res) => {
