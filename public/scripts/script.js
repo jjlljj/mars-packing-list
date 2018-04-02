@@ -41,7 +41,7 @@ const renderItemCard = ({ id, item_name, packed }) => {
   const marsCardSection = document.querySelector('.mars-cards-section')
   const itemCard = document.createElement('div')
   itemCard.setAttribute('class', `item${id} item-card`) 
-  const isChecked = packed ? "checked" : "unchecked" 
+  let isChecked = packed ? "checked" : "unchecked" 
     
   itemCard.innerHTML = `
     <div>
@@ -55,11 +55,12 @@ const renderItemCard = ({ id, item_name, packed }) => {
     <input 
       type="checkbox"
       class="toggle-packed"
-      value=${isChecked}
       >Packed</input>
   `
 
   const togglePacked = itemCard.querySelector('.toggle-packed')
+  togglePacked.checked = isChecked
+  togglePacked.value = isChecked
 
   togglePacked.addEventListener('click', () => togglePackedValue({id, packed}))
   marsCardSection.appendChild(itemCard)
@@ -82,7 +83,6 @@ const deleteItemCard = id => {
 
 
 const deleteItemFetch = async id => {
-  console.log(id)
   const deleted = await fetch(`/api/v1/items/${id}`, {
       method: "DELETE"
   })
@@ -94,7 +94,27 @@ const deleteItemFetch = async id => {
 }
 
 const togglePackedValue = ({ id, packed }) => {
+  const { value , checked } = event.target
+  const isChecked = value === "checked" ? "unchecked" : "checked"
+  const booleanVal = { checked: true, unchecked: false }
 
+  event.target.value = isChecked
+    
+  togglePackedFetch(id, booleanVal[isChecked])
 }
+
+const togglePackedFetch = async (id, packed) => {
+  const updated = await fetch(`/api/v1/items/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ packed })
+  })
+  if ( updated.status === 200 ) {
+    return await updated.json()
+  } else {
+    throw new Error('could not update item')
+  }
+}
+
 
 document.onload = renderItems()
