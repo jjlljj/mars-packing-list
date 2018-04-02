@@ -12,6 +12,7 @@ const httpsRedirect = (req, res, next) => {
   }
   next()
 }
+ console.log(environment)
 
 app.set('port', process.env.PORT || 3000)
 app.use(bodyParser.json())
@@ -32,8 +33,24 @@ app.get('/api/v1/items', (req, res) => {
 })
 
 app.post('/api/v1/items', (req, res) => {
-  // post items to mars_items table -> require { item_name: <string>, packed: <boolean> }
-  // respond with item: { item_name: <string>, packed: <boolean>, id: <number> } for render
+  const { item_name, packed } = req.body
+
+  for (let reqParam of ['item_name', 'packed']) {
+    if(!(reqParam in req.body)){
+      return res.status(422).json({error: `Expected format { item_name: <string>, packed: <boolean> }. You are missing a ${reqParam} property`})
+    }
+  }
+
+  db('mars_items').insert({
+    item_name: item_name,
+    packed: true
+    }, 'id')
+    .then(added => {
+      res.status(201).json({ item_name, packed, id: added[0] })
+    })
+    .catch(error => {
+      res.status(500).json()
+    })
 })
 
 app.patch('/api/v1/items/:id', (req, res) => {

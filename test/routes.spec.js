@@ -86,8 +86,9 @@ describe('Api Routes', () => {
     it('should add a new item', () => {
       return chai.request(server)
         .post('/api/v1/items')
-        .send({ item_name: 'shoes', packed: false })
+        .send({ item_name: 'shoes', packed: true })
         .then(response => {
+          console.log(response)
           response.should.have.status(201)
           response.should.be.json
           response.body.should.be.a('object')
