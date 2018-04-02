@@ -1,13 +1,12 @@
 
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
-  return knex('table_name').del()
+  return knex('mars_items').del()
     .then(function () {
-      // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
+      return knex('mars_items').insert([
+        {id: 1, item_name: 'hat', packed: true},
+        {id: 2, item_name: 'sweater', packed: false},
+        {id: 3, item_name: 'snacks', packed: true},
+        {id: 4, item_name: 'air', packed: false},
       ]);
     });
 };
