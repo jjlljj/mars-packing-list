@@ -4,13 +4,11 @@ const addItem = async event => {
   const itemInput = document.querySelector('.item-input')
 
   const newItem = { item_name: itemInput.value, packed: false }
-  const posted = await postItem(newItem)
-  console.log(posted)
+  const posted = await postItemFetch(newItem)
   renderItemCard(posted)
-
 }
 
-const postItem = async item => {
+const postItemFetch = async item => {
   const posted = await fetch('/api/v1/items', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -28,19 +26,27 @@ const renderItemCard = ({ id, item_name, packed }) => {
   const marsCardSection = document.querySelector('.mars-cards-section')
   const itemCard = document.createElement('div')
   itemCard.setAttribute('class', `item${id} item-card`) 
-
+  const isChecked = packed ? "checked" : "unchecked" 
+    
   itemCard.innerHTML = `
+    <div>
     <h2>${item_name}</h2>
-    <button
-      class="delete-btn"
-      name="${id}"
-      onclick="deleteItem(event)"
-    >Delete</button>
+      <button
+        class="delete-btn"
+        name="${id}"
+        onclick="deleteItem(event)"
+      >Delete</button>
+    </div>
     <input 
       type="checkbox"
       class="toggle-packed"
+      value=${isChecked}
       >Packed</input>
   `
+
+  const togglePacked = itemCard.querySelector('.toggle-packed')
+
+  togglePacked.addEventListener('click', () => togglePackedValue({id, packed}))
   marsCardSection.appendChild(itemCard)
 }
 
@@ -60,6 +66,19 @@ const deleteItemCard = id => {
 }
 
 
-const deleteItemFetch = id => {
+const deleteItemFetch = async id => {
+  const deleted = await fetch(`/api/v1/items/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+  })
+  if ( deleted.status === 201 ) {
+    console.log('deleted')
+    return await deleted.json()
+  } else {
+    throw new Error('could not delete item')
+  }
+}
+
+const togglePackedValue = ({ id, packed }) => {
 
 }
