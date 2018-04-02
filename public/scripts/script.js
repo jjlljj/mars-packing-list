@@ -67,12 +67,11 @@ const deleteItemCard = id => {
 
 
 const deleteItemFetch = async id => {
+  console.log(id)
   const deleted = await fetch(`/api/v1/items/${id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      method: "DELETE"
   })
-  if ( deleted.status === 201 ) {
-    console.log('deleted')
+  if ( deleted.status === 200 ) {
     return await deleted.json()
   } else {
     throw new Error('could not delete item')
