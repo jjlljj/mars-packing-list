@@ -45,3 +45,5 @@ app.use((req, res, next) => {
 app.listen(app.get('port'), () => {
   console.log(`Mars Packer running on port ${app.get('port')}`)
 })
+
+module.exports = app

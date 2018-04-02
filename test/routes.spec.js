@@ -23,7 +23,28 @@ describe('Client Routes', () => {
     })
   })
 
+  it('should return the homepage', () => {
+    return chai.request(server)
+      .get('/')
+      .then(response => {
+        response.should.have.status(200)
+        response.should.be.html
+      })
+      .catch( error => {
+        throw error
+      })
+  })
 
+  it('should return 404 for a page that does not exist', () => {
+    return chai.request(server)
+      .get('/nopagehere')
+      .then(response => {
+        response.should.have.status(404)
+      })
+      .catch( error => {
+        throw error
+      })
+  })
 
 })
 
