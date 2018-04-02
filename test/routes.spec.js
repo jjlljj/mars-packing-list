@@ -10,13 +10,34 @@ const configuration = require('../knexfile')[environment]
 const db = require('knex')(configuration)
 
 describe('Client Routes', () => {
-  it('should have a passing test suite', () => {
-    
+  beforeEach( done => {
+    db.migrate.rollback()
+      .then( () => {
+        db.migrate.latest()
+      .then( () => {
+         return db.seed.run()
+        .then( () => {
+          done()
+        })
+      })
+    })
   })
+
 
 })
 
 describe('Api Routes', () => {
-
+  beforeEach( done => {
+    db.migrate.rollback()
+      .then( () => {
+        db.migrate.latest()
+      .then( () => {
+         return db.seed.run()
+        .then( () => {
+          done()
+        })
+      })
+    })
+  })
 
 })
