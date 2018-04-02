@@ -12,7 +12,6 @@ const httpsRedirect = (req, res, next) => {
   }
   next()
 }
- console.log(environment)
 
 app.set('port', process.env.PORT || 3000)
 app.use(bodyParser.json())
@@ -64,7 +63,7 @@ app.patch('/api/v1/items/:id', (req, res) => {
       packed
     })
     .then(updated => {
-      if (!updated) {
+      if (!updated===0) {
         return res.status(422).json({ error: 'unable to update item' });
       }
       res.status(200).json('Record successfully updated');
@@ -75,7 +74,20 @@ app.patch('/api/v1/items/:id', (req, res) => {
 })
 
 app.delete('/api/v1/items/:id', (req, res) => {
-  // delete item at :id in  mars_items table --> require id: <number> from req.params 
+  const { id } = req.params
+
+  db('mars_items')
+    .where('id', id)
+    .del()
+    .then(item => {
+      if(!item) {
+        return res.status(422).json({ error: 'unable to delete item' });
+      }
+      res.status(200).json(item)
+    })
+    .catch(error => {
+      res.status(500).json({ error })
+    })
 })
 
 app.use((req, res, next) => {

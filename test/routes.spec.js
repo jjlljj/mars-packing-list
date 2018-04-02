@@ -157,7 +157,7 @@ describe('Api Routes', () => {
         .request(server)
         .delete('/api/v1/items/1')
         .then(response => {
-          response.body.should.have.status(200);
+          response.should.have.status(200);
           response.body.should.equal(1);
         })
         .catch(error => {
@@ -170,7 +170,7 @@ describe('Api Routes', () => {
         .request(server)
         .delete('/api/v1/items/2500')
         .then(response => {
-          expect(response).to.have.status(404);
+          response.should.have.status(422);
         });
     });
   })
