@@ -1,3 +1,18 @@
+const renderItems = async () => {
+  const items = await fetchAllItems()
+  items.map(item => renderItemCard(item))
+}
+
+const fetchAllItems = async () => {
+  const items = await fetch('/api/v1/items')
+
+  if ( items.status === 200 ) {
+    return await items.json()
+  } else {
+    throw new Error('could not get items')
+  }
+}
+
 const addItem = async event => {
   event.preventDefault()
 
@@ -81,3 +96,5 @@ const deleteItemFetch = async id => {
 const togglePackedValue = ({ id, packed }) => {
 
 }
+
+document.onload = renderItems()
