@@ -6,9 +6,9 @@ const environment = process.env.NODE_ENV || 'development'
 const configuration = require('./knexfile')[environment]
 const db = require('knex')(configuration)
 
-const httpsRedirect = (request, response, next) => {
-  if(request.headers['x-forwarded-proto'] !== 'https' ) {
-    response.redirect("https://" + request.headers.host + request.url);
+const httpsRedirect = (req, res, next) => {
+  if(req.headers['x-forwarded-proto'] !== 'https' ) {
+    res.redirect("https://" + req.headers.host + req.url);
   }
   next()
 }
@@ -21,6 +21,22 @@ app.use(express.static('public'))
 app.get('/', (req, res) => {
 })
 
+app.get('/api/v1/items', (req, res) => {
+  // get all items from mars_items table 
+})
+
+app.post('/api/v1/items', (req, res) => {
+  // post items to mars_items table -> require { item_name: <string>, packed: <boolean> }
+  // respond with item: { item_name: <string>, packed: <boolean>, id: <number> } for render
+})
+
+app.patch('/api/v1/items/:id', (req, res) => {
+  // update item at :id in mars_items table  --> require id: <number> from req.params, packed: <boolean> from req.body
+})
+
+app.delete('/api/v1/items/:id', (req, res) => {
+  // delete item at :id in  mars_items table --> require id: <number> from req.params 
+})
 
 app.listen(app.get('port'), () => {
   console.log(`Mars Packer running on port ${app.get('port')}`)
