@@ -38,6 +38,10 @@ app.delete('/api/v1/items/:id', (req, res) => {
   // delete item at :id in  mars_items table --> require id: <number> from req.params 
 })
 
+app.use((req, res, next) => {
+  res.status(404).send("Sorry can't find that!");
+});
+
 app.listen(app.get('port'), () => {
   console.log(`Mars Packer running on port ${app.get('port')}`)
 })
