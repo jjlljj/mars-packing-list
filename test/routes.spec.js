@@ -10,7 +10,9 @@ const configuration = require('../knexfile')[environment]
 const db = require('knex')(configuration)
 
 describe('Client Routes', () => {
-
+  it('should have a passing test suite', () => {
+    
+  })
 
 })
 
