@@ -7,6 +7,7 @@ exports.seed = function(knex, Promise) {
         {id: 2, item_name: 'sweater', packed: false},
         {id: 3, item_name: 'snacks', packed: true},
         {id: 4, item_name: 'air', packed: false},
-      ]);
-    });
+      ])
+    })
+    .catch(error => console.log(error));
 };
