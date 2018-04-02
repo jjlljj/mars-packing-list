@@ -22,7 +22,13 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/v1/items', (req, res) => {
-  // get all items from mars_items table 
+  db('mars_items').select()
+    .then(items => {
+      res.status(200).json(items)
+    })
+    .catch(error => {
+      res.status(500).json({ error })
+    })
 })
 
 app.post('/api/v1/items', (req, res) => {

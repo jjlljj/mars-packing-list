@@ -64,7 +64,7 @@ describe('Api Routes', () => {
   describe('GET /api/v1/items', () => {
     it('should return all mars items', () => {
       return chai.request(server)
-        .get('api/v1/items')
+        .get('/api/v1/items')
         .then( response => {
           response.should.have.status(200)
           response.should.be.json
@@ -72,7 +72,7 @@ describe('Api Routes', () => {
           response.body.length.should.equal(4)
 
           response.body[0].should.have.property('item_name')
-          response.body[0].item_name.should.equal('')
+          response.body[0].item_name.should.equal('hat')
           response.body[0].should.have.property('packed')
           response.body[0].packed.should.equal(true)
         })
