@@ -85,7 +85,8 @@ describe('Api Routes', () => {
   describe('POST /api/v1/items', () => {
 
     it('should return 422 if missing information from the request body', () => {
-      return chai.request(server)
+      return chai
+        .request(server)
         .post('/api/v1/items')
         .send({ packed: false })
         .then(response => {
@@ -98,7 +99,8 @@ describe('Api Routes', () => {
     })
 
     it('should add a new item', () => {
-      return chai.request(server)
+      return chai
+        .request(server)
         .post('/api/v1/items')
         .send({ item_name: 'yo', packed: 'true' })
         .then(response => {
@@ -142,6 +144,33 @@ describe('Api Routes', () => {
         .then(response => {
           response.should.have.status(422);
           expect(response.body.error).to.equal('unable to update item');
+        })
+        .catch(error => {
+          throw error
+        })
+    });
+  })
+
+  describe('DELETE /api/v1/items/:id', (req, res) => {
+    it('should delete the expected item', () => {
+      return chai
+        .request(server)
+        .delete('/api/v1/items/1')
+        .then(response => {
+          response.body.should.have.status(200);
+          response.body.should.equal(1);
+        })
+        .catch(error => {
+          throw error
+        })
+    })
+
+    it('should return 404 if delete group incorrect', () => {
+      return chai
+        .request(server)
+        .delete('/api/v1/items/2500')
+        .then(response => {
+          expect(response).to.have.status(404);
         });
     });
   })
