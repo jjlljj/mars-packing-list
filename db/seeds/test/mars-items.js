@@ -9,4 +9,5 @@ exports.seed = function(knex, Promise) {
         {id: 4, item_name: 'air', packed: false},
       ]);
     });
+    .catch(error => {});
 };
