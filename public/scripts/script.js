@@ -54,15 +54,17 @@ const renderItemCard = ({ id, item_name, packed }) => {
     </div>
     <input 
       type="checkbox"
+       value=${isChecked}
       class="toggle-packed"
       >Packed</input>
   `
 
   const togglePacked = itemCard.querySelector('.toggle-packed')
-  togglePacked.checked = isChecked
-  togglePacked.value = isChecked
+  if (packed) {
+    togglePacked.checked = "checked"
+  }
 
-  togglePacked.addEventListener('click', () => togglePackedValue({id, packed}))
+  togglePacked.addEventListener('click', () => togglePackedValue(id))
   marsCardSection.appendChild(itemCard)
 }
 
@@ -93,8 +95,8 @@ const deleteItemFetch = async id => {
   }
 }
 
-const togglePackedValue = ({ id, packed }) => {
-  const { value , checked } = event.target
+const togglePackedValue = ( id ) => {
+  const { value } = event.target
   const isChecked = value === "checked" ? "unchecked" : "checked"
   const booleanVal = { checked: true, unchecked: false }
 
