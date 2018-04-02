@@ -10,12 +10,14 @@
 </head>
 <body>
   <section class="form-section">
-    <form onsubmit="addItem()">
+    <form onsubmit="addItem(event)" class="mars-form">
       <h1>My Mars Packer</h1>
-      <input 
-        class="item-input"
-        placeholder="Item to pack..."/>
-      <button class="item-submit">Add Item</button>
+      <div class="control-wrap">
+        <input 
+          class="item-input"
+          placeholder="Item to pack..."/>
+        <button class="item-submit">Add Item</button>
+      </div>
   </section>
   <section class="mars-cards-section">
 
