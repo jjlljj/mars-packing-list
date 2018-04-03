@@ -102,8 +102,9 @@ describe('Api Routes', () => {
       return chai
         .request(server)
         .post('/api/v1/items')
-        .send({ item_name: 'yo', packed: 'true' })
+        .send({ item_name: 'yo', packed: true })
         .then(response => {
+          console.log(response)
           response.should.have.status(201)
           response.should.be.json
           response.body.should.be.a('object')
@@ -128,8 +129,8 @@ describe('Api Routes', () => {
         .patch('/api/v1/items/1')
         .send({ packed: 'false' })
         .then(response => {
-          response.should.have.status(200);
-          response.body.should.equal('Record successfully updated');
+          response.should.have.status(200)
+          response.body.should.equal('Record successfully updated')
         })
         .catch(error => {
           throw error
@@ -142,8 +143,8 @@ describe('Api Routes', () => {
         .patch('/api/v1/items/999')
         .send({ packed: 'false' })
         .then(response => {
-          response.should.have.status(422);
-          response.body.error.should.equal('unable to update item');
+          response.should.have.status(422)
+          response.body.error.should.equal('unable to update item')
         })
         .catch(error => {
           throw error
