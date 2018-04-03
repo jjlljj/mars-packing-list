@@ -21,6 +21,8 @@ const addItem = async event => {
   const newItem = { item_name: itemInput.value, packed: false }
   const posted = await postItemFetch(newItem)
   renderItemCard(posted)
+
+  itemInput.value = ""
 }
 
 const postItemFetch = async item => {
