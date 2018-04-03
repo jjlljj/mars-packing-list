@@ -63,7 +63,7 @@ app.patch('/api/v1/items/:id', (req, res) => {
       packed
     })
     .then(updated => {
-      if (!updated===0) {
+      if (!updated) {
         return res.status(422).json({ error: 'unable to update item' });
       }
       res.status(200).json('Record successfully updated');

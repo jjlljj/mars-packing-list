@@ -140,10 +140,10 @@ describe('Api Routes', () => {
       return chai
         .request(server)
         .patch('/api/v1/items/999')
-        .send({})
+        .send({ packed: 'false' })
         .then(response => {
           response.should.have.status(422);
-          expect(response.body.error).to.equal('unable to update item');
+          response.body.error.should.equal('unable to update item');
         })
         .catch(error => {
           throw error
